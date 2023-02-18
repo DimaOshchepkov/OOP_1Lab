@@ -15,6 +15,7 @@ namespace Lab1
         private Button[] tableButton;
         private Game game;
         private int size;
+        private int seconds;
         public Fifteen()
         {
             InitializeComponent();
@@ -46,7 +47,7 @@ namespace Lab1
 
         private void RefreshButtonField()
         {
-
+            LabelCountMove.Text = "Кол-во ходов " + game.CountMove.ToString();
             for (int position = 0; position < 16; position++)
             {
                 GetButton(position).Text = game.GetNumber(position).ToString();
@@ -63,11 +64,11 @@ namespace Lab1
         private void GameStart()
         {
             game.Start();
-
-            for (int i = 0; i < 100; i++)
-                game.ShiftRandom();
-            
+            game.ShiftRandom(100);   
             RefreshButtonField();
+            seconds = 0;
+            labelTimer.Text = Int2StringTime(0);
+            timer1.Start();
         }
 
         private void StartMenu_Click(object sender, EventArgs e)
@@ -85,87 +86,35 @@ namespace Lab1
             int position = Convert.ToInt32(((Button)sender).Tag);
             game.Shift(position);
             RefreshButtonField();
+            if (game.Check())
+            {
+                MessageBox.Show("Победа");
+                GameStart();
+            }
         }
+
+        #region pressing on buttons
 
         private void button0_Click(object sender, EventArgs e)
         {
             SwapCard(sender);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+       
+        #endregion
+
+        private string Int2StringTime(int time)
         {
-            SwapCard(sender);
+            int hours = (time - (time % (60 * 60))) / (60 * 60);
+            int minutes = (time - time % 60) / 60 - hours * 60;
+            int seconds = time - hours * 60 * 60 - minutes * 60;
+            return String.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e)
         {
-            SwapCard(sender);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-
-            SwapCard(sender);
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
-        }
-
-        private void button13_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
-        }
-
-        private void button14_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
-        }
-
-        private void button15_Click(object sender, EventArgs e)
-        {
-            SwapCard(sender);
+            seconds++;
+            labelTimer.Text = Int2StringTime(seconds);
         }
     }
 }
