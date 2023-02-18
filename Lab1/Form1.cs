@@ -98,6 +98,7 @@ namespace Lab1
         private void button0_Click(object sender, EventArgs e)
         {
             SwapCard(sender);
+            
         }
 
        
